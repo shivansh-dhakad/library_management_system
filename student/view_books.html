@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>All Books</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: url("{{ url_for('static', filename='1d0894ad-432a-4a1c-a3b6-3c0faf4377b2.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        height: 100vh;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
+        padding-top: 40px;
+        box-shadow: 3px 0 20px rgba(0, 0, 0, 0.4);
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+        position: fixed;
+      }
+
+      .sidebar h2 {
+        text-align: center;
+        color: white;
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 14px 25px;
+        margin: 8px 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        transition: 0.3s;
+        font-size: 17px;
+      }
+
+      .sidebar a:hover {
+        background: rgba(29, 158, 190, 0.432);
+      }
+
+      /* Main content */
+      .content {
+        margin-left: 270px;
+        padding: 40px;
+        width: calc(100% - 270px);
+      }
+
+      #box {
+        margin: auto;
+        width: 80%;
+        height: 80vh;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        text-align: center;
+        padding: 12px;
+        /* text-align: left; */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .btn {
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: #0077c2;
+        color: white;
+        text-decoration: none;
+      }
+      .btn:hover {
+        background: #005fa1;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      th {
+        background: rgba(27, 121, 184, 0.678);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'student/student_sidebar.html' %}
+    <div class="content">
+      <div id="box">
+        <div class="top">
+          <h2>All Books</h2>
+          <div>
+            <a
+              class="btn"
+              style="background-color: red"
+              href="{{ url_for('student.dashboard') }}"
+              >Back</a
+            >
+            <a class="btn" href="{{ url_for('student.search_book') }}"
+              >Search</a
+            >
+          </div>
+        </div>
+        {% if books %}
+        <div style="max-height: 70vh; overflow-y: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Book ID</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Available</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for b in books %}
+              <tr>
+                <td>{{ b.book_id }}</td>
+                <td>{{ b.book_name }}</td>
+                <td>{{ b.author_name }}</td>
+                <td>{{ b.publication_year or '' }}</td>
+                <td>{{ b.number_of_books }}</td>
+                <td>
+                  <form
+                    action="{{ url_for('student.request_issue', book_id=b.book_id ,number=b.number_of_books) }}"
+                    method="POST"
+                  >
+                    <button class="btn" type="submit">Issue Book</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>No books found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>

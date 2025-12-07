@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Return Book</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: url("{{ url_for('static', filename='1d0894ad-432a-4a1c-a3b6-3c0faf4377b2.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        height: 100vh;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
+        padding-top: 40px;
+        box-shadow: 3px 0 20px rgba(0, 0, 0, 0.4);
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+        position: fixed;
+      }
+
+      .sidebar h2 {
+        text-align: center;
+        color: white;
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 14px 25px;
+        margin: 8px 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        transition: 0.3s;
+        font-size: 17px;
+      }
+
+      .sidebar a:hover {
+        background: rgba(29, 158, 190, 0.432);
+      }
+
+      /* Main content */
+      .content {
+        margin-left: 270px;
+        padding: 40px;
+        width: calc(100% - 270px);
+      }
+
+      #box {
+        margin: auto;
+        width: 80%;
+        height: 80vh;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+      }
+
+      table {
+        width: 100%;
+        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.4);
+        border-collapse: collapse;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      }
+
+      th {
+        background: rgba(0, 120, 200, 0.7);
+        color: white;
+      }
+
+      .btn-return {
+        background: green;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% include 'staff/staff_sidebar.html' %}
+
+    <div class="content">
+      <div id="box">
+        <h1 style="color: white">🔄 Return Book</h1>
+
+        <form method="GET">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search by Request ID / Student / Book"
+            style="padding: 10px; width: 60%; border-radius: 8px"
+          />
+          <button style="padding: 10px 15px; border-radius: 8px">Search</button>
+        </form>
+
+        <table>
+          <tr>
+            <th>Request ID</th>
+            <th>Student</th>
+            <th>Book</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+
+          {% for r in requests %}
+          <tr>
+            <td>{{ r.request_id }}</td>
+            <td>{{ r.student_name }}</td>
+            <td>{{ r.book_name }}</td>
+            <td>{{ r.status }}</td>
+
+            <td>
+              {% if r.status == "Approved" %}
+              <form
+                method="POST"
+                action="{{ url_for('staff.return_book', req_id=r.request_id) }}"
+              >
+                <button class="btn-return">Return</button>
+              </form>
+              {% else %} ✔ {{ r.status }} {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
