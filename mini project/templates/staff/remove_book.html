@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remove Book</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: url("{{ url_for('static', filename='1d0894ad-432a-4a1c-a3b6-3c0faf4377b2.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        height: 100vh;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
+        padding-top: 40px;
+        box-shadow: 3px 0 20px rgba(0, 0, 0, 0.4);
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+        position: fixed;
+      }
+
+      .sidebar h2 {
+        text-align: center;
+        color: white;
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 14px 25px;
+        margin: 8px 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        transition: 0.3s;
+        font-size: 17px;
+      }
+
+      .sidebar a:hover {
+        background: rgba(29, 158, 190, 0.432);
+      }
+
+      /* Main content */
+      .content {
+        margin-left: 270px;
+        padding: 40px;
+        width: calc(100% - 270px);
+      }
+
+      #box {
+        margin: auto;
+        width: 80%;
+        height: 80vh;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 14px;
+        text-align: center;
+        font-size: 18px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      th {
+        background: rgba(27, 121, 184, 0.678);
+        color: white;
+      }
+
+      .delete-btn {
+        padding: 8px 15px;
+        background: red;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+      }
+
+      .delete-btn:hover {
+        background: darkred;
+      }
+
+      select,
+      input {
+        width: 50%;
+        margin: auto;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 10px;
+        border: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% include 'staff/staff_sidebar.html' %}
+
+    <div class="content">
+      <div id="box">
+        <h1 style="text-align: center">Remove Book</h1>
+        <hr />
+
+        <br /><br />
+
+        <!-- SEARCH BAR -->
+        <form method="GET" action="{{ url_for('staff.remove_book_page') }}">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search by ID, Book Name, Author..."
+            value="{{ search }}"
+            style="width: 60%"
+          />
+          <button
+            style="
+              padding: 10px 20px;
+              margin-left: 10px;
+              border-radius: 10px;
+              background: #1d9fb8;
+              color: white;
+            "
+          >
+            Search
+          </button>
+        </form>
+
+        <br /><br />
+
+        <!-- BOOK TABLE -->
+        <div style="max-height: 54vh; overflow-y: auto;">
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Book Name</th>
+              <th>Author</th>
+              <th>Year</th>
+              <th>Qty</th>
+              <th>Action</th>
+            </tr>
+
+            {% for b in books %}
+            <tr>
+              <td>{{ b.book_id }}</td>
+              <td>{{ b.book_name }}</td>
+              <td>{{ b.author_name }}</td>
+              <td>{{ b.publication_year }}</td>
+              <td>{{ b.number_of_books }}</td>
+              <td>
+                <a
+                  class="delete-btn"
+                  href="{{ url_for('staff.delete_book', book_id=b.book_id) }}"
+                  onclick="return confirm('Are you sure to delete this book?');"
+                >
+                  Delete
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
