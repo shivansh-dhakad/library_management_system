@@ -1,6 +1,5 @@
 # models/db.py
 import pymysql
-from config import MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB
 
 def get_connection():
     return pymysql.connect(
@@ -11,3 +10,4 @@ def get_connection():
         cursorclass=pymysql.cursors.DictCursor,
         autocommit=False  # we'll control transactions
     )
+
