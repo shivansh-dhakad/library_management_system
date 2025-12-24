@@ -1,6 +1,5 @@
 # app.py
 from flask import Flask
-from config import SECRET_KEY
 from controllers.auth import auth
 from controllers.student import student
 from controllers.staff import staff
@@ -17,3 +16,4 @@ if __name__ == "__main__":
     app = create_app()
     # debug True for development only
     app.run(host="0.0.0.0", port=5000, debug=True)
+
